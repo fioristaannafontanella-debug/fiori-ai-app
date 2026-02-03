@@ -1,0 +1,15 @@
+{
+  "date": "2026-01-29",
+  "items": [
+    {"name":"rose rosa", "color":"rosa", "qty":30},
+    {"name":"rose bianche", "color":"bianco", "qty":20},
+    {"name":"tulipani rosa", "color":"rosa", "qty":25},
+    {"name":"lisianthus bianco", "color":"bianco", "qty":18},
+    {"name":"gerbere", "color":"mix", "qty":20},
+    {"name":"ranuncoli", "color":"mix", "qty":15},
+    {"name":"eucalipto", "color":"verde", "qty":40},
+    {"name":"gypsophila (nebbiolina)", "color":"bianco", "qty":40},
+    {"name":"verde misto", "color":"verde", "qty":50}
+  ],
+  "notes": "Se un fiore non è in lista, NON usarlo. Se manca un colore, proponi il più vicino tra disponibili."
+}

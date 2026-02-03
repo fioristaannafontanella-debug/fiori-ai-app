@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Il tuo Bouquet Perfetto</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --cipria:#f3d6dc;
+      --salvia:#8fa89b;
+      --salvia2:#7a9487;
+      --text:#3f3f3f;
+      --muted:#7a6a6a;
+      --line:#e7d3d9;
+      --card:rgba(255,255,255,0.94);
+      --overlay:0.84;
+      --shadow: 0 22px 60px rgba(0,0,0,0.10);
+      --radius: 22px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:"Inter", sans-serif;
+      color:var(--text);
+      background:
+        linear-gradient(rgba(243,214,220,var(--overlay)), rgba(243,214,220,var(--overlay))),
+        url("/floral-bg.jpg");
+      background-size:cover;
+      background-position:center;
+      background-attachment:fixed;
+    }
+    .wrap{
+      max-width: 980px;
+      margin: 42px auto;
+      padding: 0 16px 34px;
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 16px;
+      align-items:start;
+    }
+    @media (max-width: 920px){ .wrap{ grid-template-columns: 1fr; } }
+    .panel{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      backdrop-filter: blur(2px);
+    }
+    .brand{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    h1{
+      margin:0;
+      font-family:"Playfair Display", serif;
+      font-weight:600;
+      font-size: 38px;
+      color:#5f746b;
+      letter-spacing:-0.2px;
+    }
+    .sub{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-style: italic;
+      line-height: 1.45;
+      font-size: 14.5px;
+    }
+    .badge{
+      border:1px solid var(--line);
+      padding:8px 10px;
+      border-radius:999px;
+      color:#5f746b;
+      font-weight:600;
+      font-size:12px;
+      background:rgba(255,255,255,0.7);
+      white-space:nowrap;
+    }
+
+    .progressWrap{ margin: 14px 0 18px; }
+    .progressTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:8px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .bar{
+      width:100%;
+      height:10px;
+      background:#f1e1e6;
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid var(--line);
+    }
+    .bar > div{
+      height:100%;
+      width: 25%;
+      background: linear-gradient(90deg, var(--salvia), #caa2ad);
+      border-radius:999px;
+      transition: width .25s ease;
+    }
+
+    .stepTitle{
+      font-family:"Playfair Display", serif;
+      font-size: 22px;
+      color:#5f746b;
+      margin: 0 0 6px;
+    }
+    .stepHelp{
+      margin:0 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .pills{ display:flex; flex-wrap:wrap; gap: 10px; }
+    .pill{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,0.75);
+      border-radius: 999px;
+      padding: 10px 12px;
+      cursor:pointer;
+      transition: transform .12s ease, background .2s ease, border-color .2s ease;
+      font-size: 14px;
+      color:#4a4a4a;
+      user-select:none;
+    }
+    .pill:hover{ transform: translateY(-1px); }
+    .pill.active{
+      background: rgba(143,168,155,0.22);
+      border-color: rgba(122,148,135,0.65);
+      color:#2f3b35;
+      font-weight:600;
+    }
+
+    label{
+      display:block;
+      font-weight:600;
+      font-size: 13.5px;
+      color:#5a5a5a;
+      margin: 10px 0 8px;
+    }
+    input[type="range"]{ width:100%; accent-color: var(--salvia); }
+
+    .budgetRow{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      gap:10px;
+      margin-top: 6px;
+    }
+    .budgetVal{ font-weight:700; color:#5f746b; font-size: 16px; }
+    .emotion{
+      margin-top: 8px;
+      color: var(--muted);
+      font-style: italic;
+      font-size: 14.5px;
+      line-height:1.45;
+      min-height: 22px;
+    }
+
+    .nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .btn{
+      border: none;
+      background: var(--salvia);
+      color:#fff;
+      font-weight:700;
+      padding: 12px 16px;
+      border-radius: 999px;
+      cursor:pointer;
+      transition: transform .12s ease, background .2s ease;
+      letter-spacing:.2px;
+      white-space: nowrap;
+    }
+    .btn:hover{ background: var(--salvia2); transform: translateY(-1px); }
+    .btn.secondary{ background: transparent; color: var(--salvia2); border: 1px solid var(--salvia); }
+
+    .hidden{ display:none; }
+
+    .resultTitle{
+      font-family:"Playfair Display", serif;
+      font-size: 22px;
+      color:#5f746b;
+      margin: 0 0 8px;
+    }
+    #status{
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-style: italic;
+      min-height: 20px;
+    }
+    #result{
+      white-space: pre-line;
+      line-height: 1.55;
+      background: rgba(255,255,255,0.8);
+      border: 1px dashed var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      min-height: 66px;
+    }
+    .imgBox{
+      margin-top: 14px;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
+    }
+    #imgResult{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius: 14px;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.14);
+    }
+    #imgHint{ margin-top:10px; color:#8a7a7a; font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="panel">
+      <div class="brand">
+        <div>
+          <h1>Il tuo Bouquet Perfetto</h1>
+          <p class="sub">Rispondi a poche domande. Noi componiamo un bouquet armonioso e generiamo la foto realistica.</p>
+        </div>
+        <div class="badge" id="stepBadge">Step 1/4</div>
+      </div>
+
+      <div class="progressWrap">
+        <div class="progressTop">
+          <span id="progressLabel">Occasione</span>
+          <span id="progressPercent">25%</span>
+        </div>
+        <div class="bar"><div id="barFill"></div></div>
+      </div>
+
+      <div id="step1">
+        <div class="stepTitle">Scegli l’occasione</div>
+        <p class="stepHelp">Ci aiuta a dare il tono giusto.</p>
+        <div class="pills" id="occasionPills"></div>
+        <div class="nav">
+          <span></span>
+          <button class="btn" id="next1" type="button">Avanti</button>
+        </div>
+      </div>
+
+      <div id="step2" class="hidden">
+        <div class="stepTitle">Palette colori</div>
+        <p class="stepHelp">Scegli i colori che vuoi vedere nel bouquet.</p>
+        <div class="pills" id="palettePills"></div>
+        <div class="nav">
+          <button class="btn secondary" id="back2" type="button">Indietro</button>
+          <button class="btn" id="next2" type="button">Avanti</button>
+        </div>
+      </div>
+
+      <div id="step3" class="hidden">
+        <div class="stepTitle">Stile del bouquet</div>
+        <p class="stepHelp">Definisce forma e sensazione.</p>
+        <div class="pills" id="stylePills"></div>
+        <div class="nav">
+          <button class="btn secondary" id="back3" type="button">Indietro</button>
+          <button class="btn" id="next3" type="button">Avanti</button>
+        </div>
+      </div>
+
+      <div id="step4" class="hidden">
+        <div class="stepTitle">Budget & dimensione</div>
+        <p class="stepHelp">Budget minimo 35€ e sale di 5€ per volta.</p>
+
+        <label for="budget">Budget</label>
+        <input id="budget" type="range" min="35" max="150" step="5" value="35" />
+        <div class="budgetRow">
+          <div class="budgetVal">Budget: <span id="bval">35</span>€</div>
+          <div style="font-size:12.5px;color:#8a7a7a">Step: 5€</div>
+        </div>
+        <div class="emotion" id="budgetEmotion"></div>
+
+        <label>Dimensione</label>
+        <div class="pills" id="sizePills"></div>
+
+        <div class="nav">
+          <button class="btn secondary" id="back4" type="button">Indietro</button>
+          <button class="btn" id="genBtn" type="button">✨ Genera bouquet + foto</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="resultTitle">La nostra proposta</div>
+      <div id="status">Compila i passaggi e genera la proposta.</div>
+      <div id="result"></div>
+
+      <div class="imgBox">
+        <img id="imgResult" alt="Bouquet generato dall'IA" />
+        <div id="imgHint">Qui apparirà la foto del bouquet generata dall’IA.</div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+(() => {
+  // ---- options
+  const OPTIONS = {
+    occasion: [
+      "Compleanno","Anniversario","Nascita","Laurea",
+      "Ringraziamento","San Valentino","Solo perché","Condoglianze (tono sobrio)"
+    ],
+    palette: [
+      { label:"Rosa cipria & salvia", value:"rosa cipria e salvia" },
+      { label:"Rosa cipria & bianco", value:"rosa cipria e bianco" },
+      { label:"Pastello delicato", value:"pastello delicato" },
+      { label:"Neutro (bianco & verde)", value:"neutro bianco e verde" },
+      { label:"Rosso elegante & avorio", value:"rosso elegante e avorio" },
+      { label:"Colorato elegante", value:"colorato elegante" },
+      { label:"A sorpresa (armonioso)", value:"a sorpresa, armonioso" }
+    ],
+    style: ["Elegante","Romantico","Moderno","Minimal chic","Country","Naturale"],
+    size: [
+      { label:"S (piccolo)", value:"S (piccolo)" },
+      { label:"M (medio)", value:"M (medio)" },
+      { label:"L (grande)", value:"L (grande)" }
+    ]
+  };
+
+  const state = {
+    step: 1,
+    occasion: OPTIONS.occasion[0],
+    palette: OPTIONS.palette[0].value,
+    style: OPTIONS.style[0],
+    budget: 35,
+    size: OPTIONS.size[1].value
+  };
+
+  // ---- helpers
+  const $ = (id) => document.getElementById(id);
+
+  function renderPills(containerId, items, labelFn, valueFn, selected, onSelect){
+    const wrap = $(containerId);
+    wrap.innerHTML = "";
+    items.forEach((it, idx) => {
+      const label = labelFn(it, idx);
+      const value = valueFn(it, idx);
+      const el = document.createElement("div");
+      el.className = "pill" + (value === selected ? " active" : "");
+      el.textContent = label;
+      el.addEventListener("click", () => {
+        onSelect(value);
+        [...wrap.children].forEach(c => c.classList.remove("active"));
+        el.classList.add("active");
+      });
+      wrap.appendChild(el);
+    });
+  }
+
+  function budgetEmotionText(v){
+    if (v < 45) return "Un gesto delicato, pensato per sorprendere con grazia.";
+    if (v < 65) return "Una composizione più ricca, con maggiore volume e armonia.";
+    if (v < 90) return "Un bouquet importante, emozionale e scenografico.";
+    return "Una creazione d’impatto, da vera occasione speciale.";
+  }
+
+  // ---- progress
+  const stepTitles = {1:"Occasione",2:"Palette",3:"Stile",4:"Budget & Dimensione"};
+
+  function setStep(n){
+    state.step = n;
+    for (let i=1;i<=4;i++){
+      $("step"+i).classList.toggle("hidden", i !== n);
+    }
+    $("stepBadge").textContent = `Step ${n}/4`;
+    $("progressLabel").textContent = stepTitles[n];
+    const pct = n * 25;
+    $("progressPercent").textContent = `${pct}%`;
+    $("barFill").style.width = `${pct}%`;
+  }
+
+  // ---- init UI
+  renderPills("occasionPills", OPTIONS.occasion, it=>it, it=>it, state.occasion, v=>state.occasion=v);
+  renderPills("palettePills", OPTIONS.palette, it=>it.label, it=>it.value, state.palette, v=>state.palette=v);
+  renderPills("stylePills", OPTIONS.style, it=>it, it=>it, state.style, v=>state.style=v);
+  renderPills("sizePills", OPTIONS.size, it=>it.label, it=>it.value, state.size, v=>state.size=v);
+
+  $("budget").value = String(state.budget);
+  $("bval").textContent = String(state.budget);
+  $("budgetEmotion").textContent = budgetEmotionText(state.budget);
+
+  $("budget").addEventListener("input", () => {
+    state.budget = Number($("budget").value);
+    $("bval").textContent = String(state.budget);
+    $("budgetEmotion").textContent = budgetEmotionText(state.budget);
+  });
+
+  // ---- nav
+  $("next1").addEventListener("click", () => setStep(2));
+  $("back2").addEventListener("click", () => setStep(1));
+  $("next2").addEventListener("click", () => setStep(3));
+  $("back3").addEventListener("click", () => setStep(2));
+  $("next3").addEventListener("click", () => setStep(4));
+  $("back4").addEventListener("click", () => setStep(3));
+
+  // ---- generate
+  async function generate(){
+    const statusEl = $("status");
+    const resultEl = $("result");
+    const imgEl = $("imgResult");
+    const hintEl = $("imgHint");
+
+    statusEl.textContent = "🌸 Sto creando la proposta e la foto…";
+    resultEl.textContent = "";
+    hintEl.textContent = "Attendi…";
+    imgEl.src = "";
+
+    const payload = {
+      occasion: state.occasion,
+      palette: state.palette,
+      style: state.style,
+      budget: Number(state.budget),
+      size: state.size
+    };
+
+    const res = await fetch("/api/generate", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const raw = await res.text();
+    let data;
+    try { data = JSON.parse(raw); }
+    catch { throw new Error("Risposta non JSON dal server: " + raw.slice(0,200)); }
+
+    if (!res.ok || data.error) throw new Error(data.details || data.error || "Errore sconosciuto");
+
+    statusEl.textContent = "✅ Fatto!";
+    resultEl.textContent = data.text || "Testo non disponibile.";
+
+    const b64 = data.image_base64 || data.b64_json || data?.image?.b64_json;
+    if (!b64) throw new Error("Risposta OK ma manca image_base64.");
+
+    hintEl.textContent = "Caricamento foto…";
+    imgEl.onload = () => { hintEl.textContent = "Foto pronta ✨"; };
+    imgEl.onerror = () => { hintEl.textContent = "Foto ricevuta ma non visualizzabile (formato/URL)."; };
+    imgEl.src = "data:image/png;base64," + b64;
+  }
+
+  $("genBtn").addEventListener("click", () => {
+    generate().catch(err => {
+      $("status").textContent = "❌ Errore";
+      $("result").textContent = err.message || String(err);
+      $("imgHint").textContent = "—";
+      console.error(err);
+    });
+  });
+
+  setStep(1);
+})();
+</script>
+</body>
+</html>
