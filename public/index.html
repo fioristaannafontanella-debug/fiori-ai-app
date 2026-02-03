@@ -451,6 +451,11 @@
 
     statusEl.textContent = "✅ Fatto!";
     resultEl.textContent = data.text || "Testo non disponibile.";
+// ✅ Se il backend restituisce image_url (Cloudinary), usiamo quello
+if (data.image_url) {
+  bouquetImg.src = data.image_url;
+  return;
+}
 
     const b64 = data.image_base64 || data.b64_json || data?.image?.b64_json;
     if (!b64) throw new Error("Risposta OK ma manca image_base64.");
