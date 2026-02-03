@@ -4,12 +4,13 @@ import path from "path";
 import dotenv from "dotenv";
 import OpenAI from "openai";
 import { fileURLToPath } from "url";
+import { v2 as cloudinary } from "cloudinary";
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
-app.use(express.json({ limit: "2mb" }));
+app.use(express.json({ limit: "20mb" }));
 
 // ✅ Windows-safe __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -20,6 +21,11 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ✅ OpenAI client (una volta sola)
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // home
 app.get("/", (req, res) => {
@@ -85,7 +91,11 @@ Luxury floral photography, shallow depth of field, ultra realistic.
       });
     }
 
-    return res.json({ text, image_base64: b64 });
+    const dataUrl = `data:image/png;base64,${b64}`;
+const upload = await cloudinary.uploader.upload(dataUrl, { folder: "bouquet-quiz" });
+const image_url = upload.secure_url;
+
+return res.json({ text, image_base64: b64, image_url });
   } catch (err) {
     // ✅ log vero in console
     console.error("❌ ERRORE OPENAI:", err);
